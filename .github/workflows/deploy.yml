@@ -10,9 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Build uno-itch-frontend
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Install and publish with butler
@@ -21,5 +26,4 @@ jobs:
         run: |
           wget https://broth.itch.ovh/butler/linux-amd64/butler.zip
           unzip butler.zip
-          ./butler push dist/ Unloosed/test-project:html \
-            --userversion 0.0.1
+          ./butler push dist/ Unloosed/test-project:html --userversion 0.0.1
