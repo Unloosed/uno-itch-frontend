@@ -10,12 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install and publish with butler
+      - name: Setup butler
+        uses: remarkablegames/setup-butler@v1
+
+      - name: Deploy to itch.io
+        run: butler push . Unloosed/test-project:html --userversion 0.0.1
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: |
-          wget https://github.com/itchio/butler/releases/download/v15.26.0/butler_linux_amd64.zip
-          unzip butler_linux_amd64.zip
-          chmod +x butler
-          zip -r dist.zip .
-          ./butler push dist.zip Unloosed/test-project:html --userversion 0.0.1
