@@ -1,0 +1,30 @@
+name: Deploy to itch.io
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build app
+      - name: Build uno-itch-frontend
+        run: |
+          # Install dependencies & build
+          npm ci
+          npm run build  # Outputs to dist/
+          # Optional: zip if needed (itch prefers folder for HTML)
+          # zip -r dist.zip dist/
+
+      - name: Publish to itch.io
+        uses: Oval-Tutu/publish-to-itch-with-butler@v1
+        with:
+          api-key: ${{ secrets.BUTLER_API_KEY }}
+          itch_user: Unloosed
+          itch_game: test-project
+          channel: html
+          package: dist/
+          version: 0.0.1
